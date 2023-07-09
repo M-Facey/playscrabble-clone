@@ -7,6 +7,7 @@ Below is listed a couple of things I need to do to finish the project. I will tr
 - Basic Setup
   - [x] Install TailwindCSS
   - [x] Install Pinia
+  - [x] Install Vue Router
 - Home Page
 
 ## How to Use
