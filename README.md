@@ -1,10 +1,10 @@
 # PlayScrabble Clone
 
-A hopefully simple partial clone of the playscrabble game
+A hopefully simple & partial clone of the playscrabble game
 
 ## Inspiration
 
-This project is a partial clone of the [playscrabble](https://playscrabble.com) website. I was deeply interested in creating the game because I thought the interactions and functionality on the site was pretty unique. In fact, I had dare to call them "easy to do" to a friend :grimacing: of mine and now, I've fully learnt the errors on my ways :pensive:. So this is take two on the playscrabble clone.
+This project is a partial clone of the [playscrabble](https://playscrabble.com) website. I was deeply interested in creating the game because I thought the interactions and functionality on the site was pretty unique :satisfied:. In fact, I had dare to call them "easy to do" to a friend :grimacing: of mine and now, I've fully learnt the errors on my ways :pensive:. So this is take two on the playscrabble clone.
 
 ## Tech Stack
 
