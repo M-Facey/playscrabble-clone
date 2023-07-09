@@ -6,9 +6,7 @@ Below is listed a couple of things I need to do to finish the project. I will tr
 
 - Basic Setup
   - [x] Install TailwindCSS
-  - [ ] Install Pinia
-  - [ ] Unplugin
-    - [ ] Icons
+  - [x] Install Pinia
 - Home Page
 
 ## How to Use
