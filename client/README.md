@@ -8,6 +8,7 @@ Below is listed a couple of things I need to do to finish the project. I will tr
   - [x] Install TailwindCSS
   - [x] Install Pinia
   - [x] Install Vue Router
+  - [x] Fonts
 - Home Page
 
 ## How to Use

@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "nunito-sans": ["Nunito Sans", "san-serif"],
+        "londrina-solid": ["Londrina Solid", "cursive"],
+      },
+    },
   },
   plugins: [],
 };
