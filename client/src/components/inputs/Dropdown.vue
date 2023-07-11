@@ -11,13 +11,13 @@ type Dropdown = {
   dropdownLabel: string;
   description?: string;
   showAllOptions?: boolean;
-  selectedOption: Option;
+  selectedOption: number;
   options: Option[];
 };
 
 const props = defineProps<Dropdown>();
 defineEmits<{
-  (e: "set-selected-option", val: Option): void;
+  (e: "set-selected-option", val: number): void;
 }>();
 
 const isMenuOpened = ref(false);
@@ -29,9 +29,10 @@ const availableOptions = computed(() => {
   if (props.showAllOptions) {
     return props.options;
   }
-  return props.options.filter(
-    (option) => option.value !== props.selectedOption.value
-  );
+  return props.options.filter((_, index) => {
+    if (props.selectedOption === index) return true;
+    return false;
+  });
 });
 </script>
 
@@ -40,12 +41,12 @@ const availableOptions = computed(() => {
     <p class="mt-3">{{ dropdownLabel }}</p>
     <div class="relative mt-1">
       <button
-        v-if="selectedOption"
+        v-if="options[selectedOption]"
         class="w-full p-3 bg-gray-500 hover:bg-gray-600 flex items-center justify-between border border-gray-300 rounded"
         @click="toggleMenu"
       >
         <p class="flex flex-col items-start">
-          {{ selectedOption.label }}
+          {{ options[selectedOption].label }}
           <span v-if="description" class="text-left text-xs">{{
             description
           }}</span>
@@ -65,9 +66,9 @@ const availableOptions = computed(() => {
           class="hover:bg-black/20 px-5 py-3 text-left"
           :class="{
             'bg-black/40 pointer-events-none':
-              selectedOption.value === option.value,
+              options[selectedOption].value === option.value,
           }"
-          @click="$emit('set-selected-option', option)"
+          @click="$emit('set-selected-option', index)"
         >
           {{ option.label }}
         </button>
