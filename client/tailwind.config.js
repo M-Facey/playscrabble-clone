@@ -7,6 +7,9 @@ module.exports = {
         "nunito-sans": ["Nunito Sans", "san-serif"],
         "londrina-solid": ["Londrina Solid", "cursive"],
       },
+      colors: {
+        tile: "#cf6464",
+      },
     },
   },
   plugins: [],
