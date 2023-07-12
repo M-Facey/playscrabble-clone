@@ -4,6 +4,7 @@ type ButtonType = {
   icon: any;
   displayName: string;
   value?: string;
+  colorStyles?: string;
 };
 
 defineProps<ButtonType>();
@@ -11,9 +12,12 @@ defineProps<ButtonType>();
 
 <template>
   <button
-    class="group w-full bg-transparent hover:bg-white/20 px-5 py-4 flex items-center gap-x-3 border border-gray-400 rounded-lg"
+    class="group w-full bg-neutral-800 hover:bg-white/10 px-5 py-4 flex items-center gap-x-3 border border-neutral-700 rounded-lg"
   >
-    <div class="bg-red-600 rounded-xl border-red-300 border-4">
+    <div
+      class="ring-4 rounded-xl"
+      :class="[colorStyles ? colorStyles : 'bg-red-600 ring-red-600/40']"
+    >
       <Component :is="icon" class="w-7 h-7 m-1.5" />
     </div>
     <p class="text-lg">{{ displayName }}</p>
