@@ -16,7 +16,7 @@ type Dropdown = {
 };
 
 const props = defineProps<Dropdown>();
-defineEmits<{
+const emits = defineEmits<{
   (e: "set-selected-option", val: number): void;
 }>();
 
@@ -30,10 +30,15 @@ const availableOptions = computed(() => {
     return props.options;
   }
   return props.options.filter((_, index) => {
-    if (props.selectedOption === index) return true;
+    if (props.selectedOption !== index) return true;
     return false;
   });
 });
+
+const setSelected = (option: Option) => {
+  const index = props.options.indexOf(option);
+  emits("set-selected-option", index);
+};
 </script>
 
 <template>
@@ -68,7 +73,7 @@ const availableOptions = computed(() => {
             'bg-black/40 pointer-events-none':
               options[selectedOption].value === option.value,
           }"
-          @click="$emit('set-selected-option', index)"
+          @click="setSelected(option)"
         >
           {{ option.label }}
         </button>
