@@ -16,12 +16,12 @@ export const useGameStore = defineStore({
         { value: "online", label: "Online" },
         { value: "device", label: "On Device" },
       ],
-      numberOfPlayer: [
+      numberOfPlayers: [
         { value: "2", label: "2 Players" },
         { value: "4", label: "4 Players" },
       ],
       selectedPlayerMode: 0,
-      selectedNumberOfPlayer: 0,
+      selectedNumberOfPlayers: 0,
     },
     computerOptions: {
       computerMode: [
@@ -32,17 +32,25 @@ export const useGameStore = defineStore({
       selectedCompterMode: 0,
     },
   }),
+  getters: {
+    getTimeOption(): number {
+      return this.selectedTimeOption;
+    },
+  },
   actions: {
     setOptions(type: string, index: number) {
       if (type === "computer-mode") {
         this.computerOptions.selectedCompterMode = index;
       } else if (type === "player-mode") {
         this.playerOptions.selectedPlayerMode = index;
-      } else if (type === "num-of-player") {
-        this.playerOptions.selectedNumberOfPlayer = index;
+      } else if (type === "num-of-players") {
+        this.playerOptions.selectedNumberOfPlayers = index;
       } else if (type === "duration") {
         this.selectedTimeOption = index;
       }
+    },
+    setGameMode(mode: string) {
+      this.gameMode = mode;
     },
   },
 });
