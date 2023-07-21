@@ -32,11 +32,6 @@ export const useGameStore = defineStore({
       selectedCompterMode: 0,
     },
   }),
-  getters: {
-    getTimeOption(): number {
-      return this.selectedTimeOption;
-    },
-  },
   actions: {
     setOptions(type: string, index: number) {
       if (type === "computer-mode") {
