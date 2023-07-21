@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // pages
 import Home from "@/pages/Home.vue";
 import NotFound from "@/pages/NotFound.vue";
+import Game from "@/pages/Game.vue";
 
 // components
 import GameSettings from "@/components/home/GameSettings.vue";
@@ -23,7 +24,7 @@ export default createRouter({
         },
         {
           path: "/play/friend",
-          name: "friend-mode",
+          name: "player-settings",
           component: GameSettings,
         },
         {
@@ -32,6 +33,16 @@ export default createRouter({
           component: GameSettings,
         },
       ],
+    },
+    {
+      path: "/play/friend-game",
+      name: "player-game",
+      component: Game,
+    },
+    {
+      path: "/play/computer-game",
+      name: "computer-game",
+      component: Game,
     },
     {
       path: "/:pathMatch(.*)*",
