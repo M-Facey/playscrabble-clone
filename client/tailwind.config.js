@@ -9,6 +9,11 @@ module.exports = {
       },
       colors: {
         tile: "#cf6464",
+        "dark-tile": "#383838",
+        "tw-tile": "#F00C18",
+        "tl-tile": "#5C00B3",
+        "dw-tile": "#ED7517",
+        "dl-tile": "#8308F8",
       },
     },
   },
