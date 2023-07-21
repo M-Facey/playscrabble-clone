@@ -78,6 +78,8 @@ onMounted(() => {
       "
     />
 
-    <ActionButton display-name="Continue" size="w-full h-14 mt-auto" />
+    <RouterLink :to="{ name: 'player-game' }" class="mt-auto">
+      <ActionButton display-name="Continue" size="w-full h-14" />
+    </RouterLink>
   </section>
 </template>
