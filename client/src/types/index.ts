@@ -12,10 +12,10 @@ export interface BoardTile {
   playerTile: PlayerTile;
   isSpecialTile: string;
   isOccupied: boolean;
+  borders: string[];
 }
 
 export interface ContextTile extends BaseTile {
-  aligned: boolean;
   start: boolean;
   position: number;
 }

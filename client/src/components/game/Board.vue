@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { createBoard } from "@/utils";
 import { useBoardStore } from "@/stores/board";
 import { useResizeObserver } from "@vueuse/core";
 
 import IconStar from "@/components/icons/IconStar.vue";
+import { babelParse } from "vue/compiler-sfc";
 
 const boardEl = ref<HTMLDivElement>();
 const boardWidth = ref(-1);
@@ -61,8 +62,6 @@ function handleBoardDrop(e: DragEvent, index: number) {
       letter: "",
       value: -1,
     };
-    const { letter, value } = boardStore.board[index].playerTile;
-    boardStore.insertContextTile({ letter, value }, index);
   } else {
     boardStore.board[index].playerTile =
       boardStore.board[boardStore.game.dragIndex].playerTile;
@@ -73,11 +72,17 @@ function handleBoardDrop(e: DragEvent, index: number) {
       letter: "",
       originalPosition: -1,
     };
-
-    const { letter, value } = boardStore.board[index].playerTile;
-    boardStore.insertContextTile({ letter, value }, index);
   }
 }
+
+watch(
+  () => boardStore.getPlayerTiles,
+  (tiles) => {
+    tiles.map(({ pos }) => {
+      boardStore.board[pos].borders = boardStore.checkAlignment2(tiles, pos);
+    });
+  }
+);
 
 onMounted(() => {
   boardStore.setBoardTiles(createBoard(boardStore.numberOfCells));
@@ -117,7 +122,13 @@ onMounted(() => {
 
         <div
           v-if="tile.playerTile.playerName"
-          class="w-full h-full absolute bg-tile flex items-center justify-center scale-[1.15] rounded"
+          class="w-full h-full absolute bg-tile flex items-center justify-center scale-[1.15]"
+          :class="{
+            'border-b': tile.borders.includes('bottom'),
+            'border-t': tile.borders.includes('top'),
+            'border-r': tile.borders.includes('right'),
+            'border-l': tile.borders.includes('left'),
+          }"
           draggable="true"
           @drag="handleBoardDrag"
           @dragstart="handleBoardDragStart($event, index)"

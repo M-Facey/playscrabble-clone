@@ -60,6 +60,20 @@ export const useBoardStore = defineStore({
         return a;
       }, 0);
     },
+    getPlayerTiles(): { tile: BoardTile; pos: number }[] {
+      return this.board
+        .map((tile, index) => {
+          return {
+            tile,
+            pos: index,
+          };
+        })
+        .filter(
+          ({ tile }) =>
+            tile.playerTile.playerName ===
+            this.players[this.game.selectedPlayer].name
+        );
+    },
   },
   actions: {
     isSpecialTile(index: number) {
@@ -93,61 +107,35 @@ export const useBoardStore = defineStore({
         }
       }
     },
-    insertContextTile(tile: BaseTile, pos: number) {
-      if (this.game.contextTiles.length === 0) {
-        this.game.contextTiles.push({
-          ...tile,
-          aligned: true,
-          start: true,
-          position: pos,
-        });
-        return;
-      }
-
-      if (this.game.contextTiles[0].position > pos) {
-        this.game.contextTiles[0].start = false;
-        this.game.contextTiles[0].aligned = false;
-      }
-
-      this.game.contextTiles.push({
-        ...tile,
-        aligned: false,
-        start: true,
-        position: pos,
+    checkAlignment2(
+      contextTiles: { tile: BoardTile; pos: number }[],
+      currentPos: number
+    ) {
+      const something = contextTiles.map((tile) => {
+        return tile.pos - currentPos;
       });
 
-      this.game.contextTiles.sort((a, b) => a.position - b.position);
+      let aligned = false;
+      let borders = ["left", "right", "top", "bottom"];
 
-      for (let i = 0; i < this.game.contextTiles.length; i++) {
-        if (i === 0) {
-          this.game.contextTiles[i].aligned = true;
-        } else if (
-          i + 1 <= this.game.contextTiles.length - 1 &&
-          this.game.contextTiles.length > 2
-        ) {
-          this.game.contextTiles[i].aligned = this.checkAlignment(
-            this.game.contextTiles[i].position,
-            this.game.contextTiles[i + 1].position
-          );
-        } else if (
-          i === this.game.contextTiles.length - 1 &&
-          this.game.contextTiles.length > 1
-        ) {
-          this.game.contextTiles[i].aligned = this.checkAlignment(
-            this.game.contextTiles[i - 1].position,
-            this.game.contextTiles[i].position
-          );
-        }
+      if (something.includes(-1)) {
+        aligned = true;
+        borders.splice(borders.indexOf("left"), 1);
       }
-    },
-    checkAlignment(posA: number, posB: number) {
-      const posX = Math.abs(posB - posA);
-      console.log(posX);
-      if (posX === 1 || posX === 15) {
-        return true;
+      if (something.includes(1)) {
+        aligned = true;
+        borders.splice(borders.indexOf("right"), 1);
+      }
+      if (something.includes(-15)) {
+        aligned = true;
+        borders.splice(borders.indexOf("top"), 1);
+      }
+      if (something.includes(15)) {
+        aligned = true;
+        borders.splice(borders.indexOf("bottom"), 1);
       }
 
-      return false;
+      return aligned ? borders : [];
     },
   },
 });

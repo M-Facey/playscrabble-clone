@@ -19,6 +19,7 @@ export function createBoard(numberOfTiles: number) {
       },
       isSpecialTile: tileLabel,
       isOccupied: false,
+      borders: [],
     });
   }
 
