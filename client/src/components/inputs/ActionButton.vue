@@ -6,10 +6,15 @@ type Button = {
 };
 
 defineProps<Button>();
+defineEmits<{ (e: "triggerEvent"): void }>();
 </script>
 
 <template>
-  <button class="rounded-xl border border-gray-300 p-1" :class="[size]">
+  <button
+    class="rounded-xl border border-gray-300 p-1"
+    :class="[size]"
+    @click="$emit('triggerEvent')"
+  >
     <div class="h-full flex items-center justify-center bg-gray-300 rounded-md">
       <Component v-if="icon" :is="icon" class="w-7 h-7 text-black" />
       <p v-if="displayName" class="text-lg text-black">{{ displayName }}</p>

@@ -20,7 +20,7 @@ export const useBoardStore = defineStore({
     game: {
       dragIndex: 0,
       dragTileType: "player",
-      selectedPlayer: 1,
+      selectedPlayer: 0,
       contextTiles: [] as ContextTile[],
     },
     players: [
@@ -74,6 +74,17 @@ export const useBoardStore = defineStore({
             this.players[this.game.selectedPlayer].name
         );
     },
+    getFirstPlayerTile(): number {
+      return this.board.findIndex((item) => {
+        return (
+          item.playerTile.playerName ===
+          this.players[this.game.selectedPlayer].name
+        );
+      });
+    },
+    isTileOnCenter(): boolean {
+      return this.board[112].playerTile.playerName !== "";
+    },
   },
   actions: {
     isSpecialTile(index: number) {
@@ -96,16 +107,27 @@ export const useBoardStore = defineStore({
     fillPlayerTiles(playerIndex: number) {
       for (let i = 0; i < 7; i++) {
         const index = Math.floor(Math.random() * 27);
-        if (this.tileBag[index]) {
-          this.tileBag[index][1].amount -= 1;
-          this.players[playerIndex].tiles.push({
-            letter: this.tileBag[index][0],
-            value: this.tileBag[index][1].value,
-            originalPosition: i,
-            playerName: this.players[playerIndex].name,
-          });
-        }
+        // if (this.tileBag[index]) {
+        this.tileBag[index][1].amount -= 1;
+        this.players[playerIndex].tiles.push({
+          letter: this.tileBag[index][0],
+          value: this.tileBag[index][1].value,
+          originalPosition: i,
+          playerName: this.players[playerIndex].name,
+        });
+        // }
       }
+    },
+    renewPlayerTiles(playerIndex: number) {
+      this.players[playerIndex].tiles.map((tile, idx) => {
+        if (tile.letter === "") {
+          const index = Math.floor(Math.random() * 27);
+          this.tileBag[index][1].amount -= 1;
+          this.players[playerIndex].tiles[idx].letter = this.tileBag[index][0];
+          this.players[playerIndex].tiles[idx].value =
+            this.tileBag[index][1].value;
+        }
+      });
     },
     checkAlignment2(
       contextTiles: { tile: BoardTile; pos: number }[],

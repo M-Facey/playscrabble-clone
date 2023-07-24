@@ -1,11 +1,17 @@
 <script lang="ts" setup>
-import IconClock from "../icons/IconClock.vue";
+import IconClock from "@/components/icons/IconClock.vue";
+import { useBoardStore } from "@/stores/board";
+
+const boardStore = useBoardStore();
 </script>
 
 <template>
   <div class="relative w-[550px] flex">
     <!-- player 1 section -->
-    <div class="w-1/2 p-3 border border-gray-400 rounded-l-xl">
+    <div
+      class="w-1/2 p-3 border border-gray-400 rounded-l-xl"
+      :class="{ 'bg-gray-200': boardStore.game.selectedPlayer === 0 }"
+    >
       <div class="flex items-center border-b border-gray-400 pb-3">
         <div
           class="w-12 h-12 p-1 bg-gray-300 border border-gray-400 rounded-2xl"
@@ -25,7 +31,10 @@ import IconClock from "../icons/IconClock.vue";
       </div>
     </div>
     <!-- player 2 section -->
-    <div class="w-1/2 p-3 border border-gray-400 rounded-r-xl">
+    <div
+      class="w-1/2 p-3 border border-gray-400 rounded-r-xl"
+      :class="{ 'bg-gray-200': boardStore.game.selectedPlayer === 1 }"
+    >
       <div class="flex items-center border-b border-gray-400 pb-3">
         <div
           class="w-12 h-12 p-1 bg-gray-300 border border-gray-400 rounded-2xl"

@@ -58,7 +58,6 @@ function handleBoardDrop(e: DragEvent, index: number) {
       ...boardStore.players[boardStore.game.selectedPlayer].tiles[
         boardStore.game.dragIndex
       ],
-      playerName: "",
       letter: "",
       value: -1,
     };

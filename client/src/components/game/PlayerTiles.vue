@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import Tile from "./Tile.vue";
-import ActionButton from "../inputs/ActionButton.vue";
+import Tile from "@/components/game/Tile.vue";
+import ActionButton from "@/components/inputs/ActionButton.vue";
+
 import IconUndo from "@/components/icons/IconUndo.vue";
 import IconShuffle from "@/components/icons/IconShuffle.vue";
+
 import { useBoardStore } from "@/stores/board";
+import { useGameStore } from "@/stores/game";
 
 const boardStore = useBoardStore();
+const gameStore = useGameStore();
 
 const tile = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
@@ -88,70 +92,80 @@ function handlePlayerDrop(e: DragEvent, index: number) {
   };
 }
 
-// mounte
 onMounted(() => {
-  boardStore.fillPlayerTiles(1);
+  boardStore.fillPlayerTiles(boardStore.game.selectedPlayer);
 });
 </script>
 
 <template>
-  <div
-    class="w-max bg-gray-700 flex items-center gap-2 p-3 mt-4 mx-auto rounded-lg"
-  >
-    <ActionButton :icon="IconShuffle" size="shuffle-icon w-14 h-14" />
+  <div>
     <div
-      v-for="(tile, index) in boardStore.players[boardStore.game.selectedPlayer]
-        .tiles"
-      class="select-none"
+      class="w-max bg-gray-700 flex items-center gap-2 p-3 mt-4 mx-auto rounded-lg"
     >
-      <Tile
-        v-if="tile?.playerName"
-        :value="tile.value"
-        :letter="tile.letter"
-        :data-index="index"
-        draggable="true"
-        @drag="handlePlayerDrag($event, false)"
-        @dragend="handlePlayerDrag($event, true)"
-        @dragstart="handlePlayerDragStart($event, index)"
-        @dragenter="handlePlayerDragEnter"
-        @dragover="handlePlayerDragOver"
-        @drop="handlePlayerDrop($event, index)"
-        :class="{
-          'opacity-0': isDragging && boardStore.game.dragIndex === index,
-        }"
-      />
+      <ActionButton :icon="IconShuffle" size="shuffle-icon w-14 h-14" />
       <div
-        v-else
-        class="w-[53px] h-[52px]"
-        :data-index="index"
-        @dragenter="handlePlayerDragEnter"
-        @dragover="handlePlayerDragOver"
-        @drop="handlePlayerDrop($event, index)"
-      ></div>
-    </div>
-    <ActionButton :icon="IconUndo" size="undo-icon w-14 h-14" />
+        v-for="(tile, index) in boardStore.players[
+          boardStore.game.selectedPlayer
+        ].tiles"
+        class="select-none"
+      >
+        <Tile
+          v-if="tile?.playerName"
+          :value="tile.value"
+          :letter="tile.letter"
+          :data-index="index"
+          draggable="true"
+          @drag="handlePlayerDrag($event, false)"
+          @dragend="handlePlayerDrag($event, true)"
+          @dragstart="handlePlayerDragStart($event, index)"
+          @dragenter="handlePlayerDragEnter"
+          @dragover="handlePlayerDragOver"
+          @drop="handlePlayerDrop($event, index)"
+          :class="{
+            'opacity-0': isDragging && boardStore.game.dragIndex === index,
+          }"
+        />
+        <div
+          v-else
+          class="w-[53px] h-[52px]"
+          :data-index="index"
+          @dragenter="handlePlayerDragEnter"
+          @dragover="handlePlayerDragOver"
+          @drop="handlePlayerDrop($event, index)"
+        ></div>
+      </div>
+      <ActionButton :icon="IconUndo" size="undo-icon w-14 h-14" />
 
-    <div
-      v-if="
-        boardStore.players[boardStore.game.selectedPlayer].tiles.length > 0 &&
-        boardStore.game.dragTileType === 'player'
-      "
-      ref="tile"
-      class="absolute pointer-events-none"
-      :class="[isDragging ? 'opacity-100 shadow-xl' : 'opacity-0']"
-    >
-      <Tile
-        :letter="
-          boardStore.players[boardStore.game.selectedPlayer].tiles[
-            boardStore.game.dragIndex
-          ].letter
+      <div
+        v-if="
+          boardStore.players[boardStore.game.selectedPlayer].tiles.length > 0 &&
+          boardStore.game.dragTileType === 'player'
         "
-        :value="
-          boardStore.players[boardStore.game.selectedPlayer].tiles[
-            boardStore.game.dragIndex
-          ].value
-        "
-      />
+        ref="tile"
+        class="absolute pointer-events-none"
+        :class="[isDragging ? 'opacity-100 shadow-xl' : 'opacity-0']"
+      >
+        <Tile
+          :letter="
+            boardStore.players[boardStore.game.selectedPlayer].tiles[
+              boardStore.game.dragIndex
+            ].letter
+          "
+          :value="
+            boardStore.players[boardStore.game.selectedPlayer].tiles[
+              boardStore.game.dragIndex
+            ].value
+          "
+        />
+      </div>
+    </div>
+    <div>
+      <ActionButton
+        display-name="Submit"
+        size="w-20"
+        @trigger-event="gameStore.nextPlayer"
+      ></ActionButton>
+      <ActionButton display-name="Resign" size="w-20"></ActionButton>
     </div>
   </div>
 </template>
