@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useGameStore } from "@/stores/game";
+import { useSettingsStore } from "@/stores/settings";
 import ModeButton from "@/components/inputs/ModeButton.vue";
 import IconRocket from "@/components/icons/IconRocket.vue";
 import IconUsers from "@/components/icons/IconUsers.vue";
 
 const word = "scrabble";
-const { setGameMode } = useGameStore();
+const { setGameMode } = useSettingsStore();
 </script>
 
 <template>
@@ -51,3 +51,4 @@ const { setGameMode } = useGameStore();
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25) inset;
 }
 </style>
+@/stores/settings

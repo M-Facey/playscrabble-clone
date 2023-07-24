@@ -1,25 +1,25 @@
 <script lang="ts" setup>
 import { computed, onMounted } from "vue";
-import { useGameStore } from "@/stores/game";
+import { useSettingsStore } from "@/stores/settings";
 
-import ActionButton from "../inputs/ActionButton.vue";
-import IconArrowLeft from "../icons/IconArrowLeft.vue";
-import Dropdown from "../inputs/Dropdown.vue";
+import IconArrowLeft from "@/components/icons/IconArrowLeft.vue";
+import ActionButton from "@/components/inputs/ActionButton.vue";
+import Dropdown from "@/components/inputs/Dropdown.vue";
 
-let gameStore = useGameStore();
+let settingsStore = useSettingsStore();
 
 const isPlayerMode = computed(() => {
-  return gameStore.gameMode === "player";
+  return settingsStore.gameMode === "player";
 });
 
 onMounted(() => {
   // reset the dropdown options
-  gameStore.selectedTimeOption = 0;
-  if (gameStore.gameMode === "player") {
-    gameStore.playerOptions.selectedNumberOfPlayers = 0;
-    gameStore.playerOptions.selectedPlayerMode = 0;
-  } else if (gameStore.gameMode === "computer") {
-    gameStore.computerOptions.selectedCompterMode = 0;
+  settingsStore.selectedTimeOption = 0;
+  if (settingsStore.gameMode === "player") {
+    settingsStore.playerOptions.selectedNumberOfPlayers = 0;
+    settingsStore.playerOptions.selectedPlayerMode = 0;
+  } else if (settingsStore.gameMode === "computer") {
+    settingsStore.computerOptions.selectedCompterMode = 0;
   }
 });
 </script>
@@ -39,42 +39,44 @@ onMounted(() => {
     <Dropdown
       dropdown-label="Select time limit per player"
       description="When the timer runs out, the game is over"
-      :selected-option="gameStore.selectedTimeOption"
-      :options="gameStore.timeOptions"
+      :selected-option="settingsStore.selectedTimeOption"
+      :options="settingsStore.timeOptions"
       :show-all-options="false"
-      @set-selected-option="(index) => gameStore.setOptions('duration', index)"
+      @set-selected-option="
+        (index) => settingsStore.setOptions('duration', index)
+      "
     />
 
     <Dropdown
       v-if="isPlayerMode"
       dropdown-label="Select player mode"
-      :selected-option="gameStore.playerOptions.selectedPlayerMode"
-      :options="gameStore.playerOptions.playerMode"
+      :selected-option="settingsStore.playerOptions.selectedPlayerMode"
+      :options="settingsStore.playerOptions.playerMode"
       :show-all-options="true"
       @set-selected-option="
-        (index) => gameStore.setOptions('player-mode', index)
+        (index) => settingsStore.setOptions('player-mode', index)
       "
     />
 
     <Dropdown
       v-if="isPlayerMode"
       dropdown-label="Select number of players"
-      :selected-option="gameStore.playerOptions.selectedNumberOfPlayers"
-      :options="gameStore.playerOptions.numberOfPlayers"
+      :selected-option="settingsStore.playerOptions.selectedNumberOfPlayers"
+      :options="settingsStore.playerOptions.numberOfPlayers"
       :show-all-options="true"
       @set-selected-option="
-        (index) => gameStore.setOptions('num-of-players', index)
+        (index) => settingsStore.setOptions('num-of-players', index)
       "
     />
 
     <Dropdown
       v-if="!isPlayerMode"
       dropdown-label="Select the computer modes"
-      :selected-option="gameStore.computerOptions.selectedCompterMode"
-      :options="gameStore.computerOptions.computerMode"
+      :selected-option="settingsStore.computerOptions.selectedCompterMode"
+      :options="settingsStore.computerOptions.computerMode"
       :show-all-options="true"
       @set-selected-option="
-        (index) => gameStore.setOptions('computer-mode', index)
+        (index) => settingsStore.setOptions('computer-mode', index)
       "
     />
 

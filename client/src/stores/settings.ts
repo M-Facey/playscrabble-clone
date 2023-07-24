@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
-export const useGameStore = defineStore({
-  id: "game",
+export const useSettingsStore = defineStore({
+  id: "settings",
   state: () => ({
     timeOptions: [
       { value: "3-mins", label: "3 minutes" },
